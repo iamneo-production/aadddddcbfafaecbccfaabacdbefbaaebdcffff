@@ -1,44 +1,45 @@
-package ai.iamneo.testing.Testing_Selenium_TestNg;
-
-import org.testng.annotations.Test;
-import java.net.URL;
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.annotations.BeforeTest;
-import org.testng.Assert;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import java.util.List;
 
 public class AppTest {
 
-	ChromeOptions chromeOptions = new ChromeOptions();
-	WebDriver driver = null;
+    WebDriver driver;
 
-	@BeforeTest
-	public void beforeTest() throws Exception {
-	//	System.setProperty("webdriver.chrome.driver", "/home/coder/project/workspace/Testing-with-Selenium-TestNg/chromedriver");
-		driver = new RemoteWebDriver(new URL("http://localhost:4444"), chromeOptions);
-	}
+    @BeforeTest
+    public void setUp() {
+        // set the system property for the chromedriver
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
 
-	@Test
-	public void TestCase_1() throws InterruptedException {
-		driver.get("https://admin.pscollege841.exam.ly/");
-		Thread.sleep(5000);  
-		String title = driver.getTitle();
-		Assert.assertEquals(title, "PS College");
-	}
-	@Test
-	public void TestCase_2() throws InterruptedException {
-		driver.get("https://admin.pscollege841.exam.ly/");
-		Thread.sleep(5000);  
-		String title = driver.getTitle();
-		Assert.assertEquals(title, "PS College");
-	}
+        // initialize the Chrome driver
+        driver = new ChromeDriver();
 
-	@AfterTest
-	public void afterTest() {
-		driver.quit();
-	}
+        // navigate to the Flipkart website
+        driver.get("https://www.flipkart.com/");
+    }
 
+    @Test
+    public void testLinksCount() {
+        // find all the links on the page
+        List<WebElement> links = driver.findElements(By.tagName("a"));
+
+        // print the number of links on the page
+        System.out.println("Number of Links: " + links.size());
+
+        // print the link text and URLs of all the links on the page
+        for (WebElement link : links) {
+            System.out.println(link.getText() + " - " + link.getAttribute("href"));
+        }
+    }
+
+    @AfterTest
+    public void tearDown() {
+        // close the browser
+        driver.quit();
+    }
 }
